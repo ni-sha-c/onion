@@ -12,7 +12,7 @@ function z(x, s)
 end
 function phik(xi, x, s, k)
 	if k == 0
-	 	return xi
+	 	return x+xi
 	end
 	zx = z(x,s)
 	return f(phik(xi*zx, x, s, k-1),s)
@@ -20,12 +20,17 @@ end
 npts = 100
 x0 = 0.2
 eps = 1.e-2
-x = LinRange(x0-eps, x0+eps, npts)
+x = LinRange(-eps, eps, npts)
 s = [0.97, 0.6]
 fig = figure(figsize=(8,5))
 ax = fig.add_subplot(111)
-for k = 1:3
-	ax.plot(x, phik.(x, x0, Ref(s), k), label="k = $k")
+nsteps = 6
+xk = zeros(nsteps)
+xk[1] = x0
+for k = 1:nsteps-1
+	ax.plot(x, phik.(x, x0, Ref(s), k-1).-xk[k], 
+			label="k = $(k-1)")
+	xk[k+1] = f(xk[k], s)
 end
 ax.xaxis.set_tick_params(labelsize=28)
 ax.yaxis.set_tick_params(labelsize=28)
