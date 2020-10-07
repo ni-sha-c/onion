@@ -3,18 +3,6 @@ function f(x, s)
 	h, a = s
 	return h*sqrt(1 - abs(1 - 2*x)^a)
 end
-function prob(n)
-	dens = zeros(n)
-	dx = 1/n
-	nsteps = 10000000
-	x = rand()
-	for i = 1:nsteps
-		x = f(x, s)
-		ind = floor(Int64, div(x, dx))
-		dens[ind+1] += 1/nsteps/n
-	end
-	return dens
-end
 function z(x, s)
 	h, a = s
 	t = f(x, s)/h
